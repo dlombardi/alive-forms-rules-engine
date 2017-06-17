@@ -1,0 +1,14 @@
+{
+    "extends": [
+        "rallycoding"
+    ],
+    "rules": {
+        "camelcase": 0,
+        "no-underscore-dangle": 0,
+        "no-param-reassign": 0,
+        "indent": [
+            2,
+            "tab"
+        ]
+    }
+}
