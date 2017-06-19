@@ -2,10 +2,13 @@
     "extends": [
         "rallycoding"
     ],
+    "parser": "babel-eslint",
     "rules": {
         "camelcase": 0,
         "no-underscore-dangle": 0,
+        "no-param-rzeassign": 0,
         "no-param-reassign": 0,
+        "no-prototype-builtins": 0,
         "indent": [
             2,
             "tab"

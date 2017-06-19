@@ -2,7 +2,7 @@ const test = require('ava');
 const Rule = require('../src/rule');
 
 /**
- * Equal operator test 
+ * equal operator test 
  */
 
 test('equal operator', t => {
@@ -29,7 +29,6 @@ test('equal operator', t => {
 	});
 
 	false_rule.resolveRule(false_data);
-	console.log(false_rule);
 
 	t.true(true_rule.status);
 	t.false(false_rule.status);
@@ -39,7 +38,7 @@ test('equal operator', t => {
 //===================================
 
 /**
- * Not Equal operator test
+ * not equal operator test
  */
 
 test('not equal operator', t => {
@@ -75,7 +74,7 @@ test('not equal operator', t => {
 //===================================
 
 /**
- * Not Equal operator test
+ * greater than operator test
  */
 
 test('greater than operator', t => {
@@ -95,8 +94,6 @@ test('greater than operator', t => {
 
 	true_rule.resolveRule(true_data);
 
-	// console.log(true_rule);
-
 	const false_rule = new Rule({
 		fact: 'value',
 		operator: '>',
@@ -109,3 +106,143 @@ test('greater than operator', t => {
 	t.false(false_rule.status);
 	t.pass();
 });
+
+//===================================
+
+/**
+ * less than operator test
+ */
+
+test('greater than operator', t => {
+	const true_data = {
+		value: 1
+	};
+
+	const false_data = {
+		value: 1
+	};
+
+	const true_rule = new Rule({
+		fact: 'value',
+		operator: '<',
+		value: 2
+	});
+
+	true_rule.resolveRule(true_data);
+
+	const false_rule = new Rule({
+		fact: 'value',
+		operator: '<',
+		value: 0
+	});
+
+	false_rule.resolveRule(false_data);
+
+	t.true(true_rule.status);
+	t.false(false_rule.status);
+	t.pass();
+});
+
+//===================================
+
+/**
+ * greater than or equal to operator
+ */
+
+test('greater than or equal to operator', t => {
+	const true_data_1 = {
+		value: 1
+	};
+
+	const true_data_2 = {
+		value: 1
+	};
+
+	const false_data_1 = {
+		value: 1
+	};
+
+	const false_data_2 = {
+		value: 1
+	};
+
+	const true_rule_1 = new Rule({
+		fact: 'value',
+		operator: '>=',
+		value: 1
+	});
+
+	const true_rule_2 = new Rule({
+		fact: 'value',
+		operator: '>=',
+		value: 0
+	});
+
+	true_rule_1.resolveRule(true_data_1);
+	true_rule_2.resolveRule(true_data_2);
+
+	const false_rule = new Rule({
+		fact: 'value',
+		operator: '>=',
+		value: 3
+	});
+
+	false_rule.resolveRule(false_data_1);
+
+	t.true(true_rule_1.status);
+	t.true(true_rule_2.status);
+	t.false(false_rule.status);
+	t.pass();
+});
+
+//===================================
+
+/**
+ * less than or equal to operator
+ */
+
+// test('less than or equal to operator', t => {
+// 	const true_data_1 = {
+// 		value: 1
+// 	};
+
+// 	const true_data_2 = {
+// 		value: 1
+// 	};
+
+// 	const false_data_1 = {
+// 		value: 1
+// 	};
+
+// 	const false_data_2 = {
+// 		value: 1
+// 	};
+
+// 	const true_rule_1 = new Rule({
+// 		fact: 'value',
+// 		operator: '>=',
+// 		value: 1
+// 	});
+
+// 	const true_rule_2 = new Rule({
+// 		fact: 'value',
+// 		operator: '>=',
+// 		value: 0
+// 	});
+
+// 	true_rule_1.resolveRule(true_data_1);
+// 	true_rule_2.resolveRule(true_data_2);
+
+// 	const false_rule = new Rule({
+// 		fact: 'value',
+// 		operator: '>=',
+// 		value: 3
+// 	});
+
+// 	false_rule.resolveRule(false_data_1);
+
+// 	t.true(true_rule_1.status);
+// 	t.true(true_rule_2.status);
+// 	t.false(false_rule.status);
+// 	t.pass();
+// });

@@ -1,84 +1,42 @@
 'use strict';
 
-const Operation = require('./operation');
-
-module.exports = function Rule({ fact, operator, value: expectedValue, valueTypeEquality }) {
+module.exports = function Rule({
+	fact,
+	operator,
+	value: expectedValue,
+	valueTypeEquality,
+	property
+}) {
 	this.status = false;
 	this.failedRule = {};
 
-	function _resolveOperation(operationData) {
-		const evaluatedOperation = this.evaluate(operationData.factValue, expectedValue);
-		return new Operation(this.type, evaluatedOperation, operationData).resolve();
-	}
-
-	const operatorDict = {
-		'=': {
-			resolve(operationData) {
-				return _resolveOperation.bind(this)(operationData);
-			},
-			evaluate: factValue => factValue === expectedValue,
-			inverse: '!=',
-			type: 'any',
-			name: 'equals'
-		},
-		'!=': {
-			resolve(operationData) {
-				return _resolveOperation.bind(this)(operationData);
-			},
-			evaluate: factValue => factValue !== expectedValue,
-			inverse: '=',
-			type: 'any',
-			name: 'does not equal'
-		},
-		'>': {
-			resolve(operationData) {
-				return _resolveOperation.bind(this)(operationData);
-			},
-			evaluate: factValue => factValue > expectedValue,
-			inverse: '<=',
-			type: 'number',
-			name: 'greater than'
-		},
-		'<': {
-			resolve(operationData) {
-				return _resolveOperation.bind(this)(operationData);
-			},
-			evaluate: factValue => factValue < expectedValue,
-			inverse: '>=',
-			type: 'number',
-			name: 'less than'
-		},
-		'>=': {
-			resolve(operationData) {
-				return _resolveOperation.bind(this)(operationData);
-			},
-			evaluate: factValue => factValue >= expectedValue,
-			inverse: '<',
-			type: 'number',
-			name: 'greater than or equal to'
-		},
-		'<=': {
-			resolve(operationData) {
-				return _resolveOperation.bind(this)(operationData);
-			},
-			evaluate: factValue => factValue <= expectedValue,
-			inverse: '>',
-			type: 'number',
-			name: 'less than or equal to'
-		}
+	this.setEngine = engine => {
+		this.engine = engine;
 	};
 
 	this.resolveRule = data => {
+		let factValue = data[fact];
+		if (property) {
+			const propertyList = property.split('.');
+			propertyList.shift();
+			propertyList.forEach(prop => {
+				factValue = factValue[prop];
+			});
+		}
 		const operationData = {
-			factValue: data[fact],
+			factValue,
 			expectedValue,
 			valueTypeEquality,
 			failedRule: this.failedRule
 		};
 
-		this.status = operatorDict[operator].resolve(operationData);
+		this.status = this.engine.operators.get(operator).resolve(operationData);
 		if (!this.status) {
-			this.failedRule = Object.assign(this.failedRule, { fact, operator, expectedValue });
+			this.failedRule = Object.assign(this.failedRule, {
+				fact,
+				operator,
+				expectedValue
+			});
 		}
 	};
 };
