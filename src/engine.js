@@ -25,6 +25,7 @@ module.exports = function Engine() {
 		if (!params.hasOwnProperty('event')) {
 			throw new Error('Engine: addCondition() argument requires "event" property');
 		}
+
 		let condition = null;
 		if (params instanceof Condition) {
 			condition = params;

@@ -32,7 +32,7 @@ module.exports = function Operator(name, descriptor, evaluateCb, { inverse, type
 	};
 
 	this.resolve = data => {
-		if (type && !_ensureType(data)) {
+		if (!_ensureType(data)) {
 			return false;
 		}
 		return _resolveOperation(data);
