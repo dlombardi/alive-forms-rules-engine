@@ -1,12 +1,10 @@
 "use strict";
 
-// const rp = require("request-promise");
+const Fact = require("./fact");
 
 module.exports = function Rule({
-    fact,
+    factKey,
     operator,
-    async,
-    resource,
     value: expectedValue,
     valueTypeEquality,
     property
@@ -19,7 +17,9 @@ module.exports = function Rule({
     };
 
     this.resolve = data => {
-        let factValue = data[fact];
+        let fact = new Fact(data);
+        fact.setCache(this.engine.cache);
+        let factValue = data[factKey];
 
         if (property) {
             const propertyList = property.split(".");
@@ -42,7 +42,7 @@ module.exports = function Rule({
 
         if (!this.status) {
             this.failedRule = Object.assign(this.failedRule, {
-                fact,
+                factKey,
                 operator,
                 expectedValue
             });

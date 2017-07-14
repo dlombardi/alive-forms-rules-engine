@@ -4,7 +4,7 @@ const test = require("ava");
 const Engine = require("../src/engine");
 
 /**
- * equal operator test 
+ * engine test 
  */
 
 test("engine works", t => {
@@ -12,7 +12,7 @@ test("engine works", t => {
 
     const data = {
         "01": "value1",
-        "02": 8,
+        "02": "value2",
         "03": "value3",
         "04": {
             number: 3,
@@ -27,7 +27,7 @@ test("engine works", t => {
             conditional: "and",
             rules: [
                 {
-                    fact: "01",
+                    factKey: "01",
                     operator: "=",
                     value: "value1"
                 },
@@ -35,18 +35,18 @@ test("engine works", t => {
                     conditional: "or",
                     rules: [
                         {
-                            fact: "02",
+                            factKey: "03",
                             operator: "=",
-                            value: 8
+                            value: "value2"
                         },
                         {
-                            fact: "03",
+                            factKey: "03",
                             operator: "=",
                             valueTypeEquality: true,
                             value: "value3"
                         },
                         {
-                            fact: "04",
+                            factKey: "04",
                             property: ".person.name",
                             operator: "=",
                             valueTypeEquality: true,

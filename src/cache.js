@@ -1,6 +1,10 @@
-'use strict';
+"use strict";
 
-module.exports = function Almanac(factMap) {
-	this.factMap = new Map(factMap);
-	this.factResultsCache = new Map(); // { cacheKey:  Promise<factValue> }
+module.exports = function Cache() {
+    this.factMap = new Map();
+    this.factResultsCache = new Map(); // { cacheKey:  Promise<factValue> }
+
+    this.setFactValue = () => {};
+
+    this.getFactValue = () => {};
 };

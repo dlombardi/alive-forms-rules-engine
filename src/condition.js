@@ -11,8 +11,7 @@ module.exports = function Condition({ conditional, rules }) {
             ? Array.prototype.every
             : Array.prototype.some;
 
-    let count_of_true_resolutions = 0;
-    this.ruleArray = [];
+    this.rulesToEvalArray = [];
 
     if (!this.conditional) {
         throw new Error("conditional is required");
@@ -26,6 +25,11 @@ module.exports = function Condition({ conditional, rules }) {
         throw new Error("rules are required");
     }
 
+    const _resolveConditionStatus = data => {
+        _parseConditionRules(data);
+        this.status = _evaluateConditionRules(data);
+    };
+
     const _parseConditionRules = data => {
         this.rules.forEach(rule => {
             if (rule.conditional && rule.rules) {
@@ -35,38 +39,22 @@ module.exports = function Condition({ conditional, rules }) {
             } else {
                 rule = new Rule(rule);
                 rule.setEngine(this.engine);
-                this.ruleArray.push(rule);
+                this.rulesToEvalArray.push(rule);
             }
         });
     };
 
-    const _resolveConditionStatus = data => {
-        this.status = _evaluateConditionRules(data);
-
-        this.ruleArray.forEach(rule => {
-            const { failedRule, listOfFailedRules } = rule;
-            let { status } = rule;
-
-            if (failedRule && !status) {
-                this.listOfFailedRules.push(failedRule);
-            }
-
-            if (listOfFailedRules) {
-                this.listOfFailedRules = this.listOfFailedRules.concat(
-                    listOfFailedRules
-                );
-            }
-        });
-    };
-
-    let _evaluateConditionRules = data => {
-        if (this.ruleArray.length === 0) {
+    const _evaluateConditionRules = data => {
+        if (this.rulesToEvalArray.length === 0) {
             return true;
         }
-        let flattenedRulesStatuses = this.ruleArray.map(rule => {
-            rule.resolve(data);
-            return rule.status;
-        });
+        let flattenedRulesStatuses = Promise.all(
+            this.rulesToEvalArray.map(rule => {
+                rule.resolve(data);
+                _logFailedRule(rule);
+                return rule.status;
+            })
+        );
 
         return this.method.call(
             flattenedRulesStatuses,
@@ -74,12 +62,26 @@ module.exports = function Condition({ conditional, rules }) {
         );
     };
 
+    const _logFailedRule = rule => {
+        const { failedRule, listOfFailedRules } = rule;
+        let { status } = rule;
+
+        if (failedRule && !status) {
+            this.listOfFailedRules.push(failedRule);
+        }
+
+        if (listOfFailedRules) {
+            this.listOfFailedRules = this.listOfFailedRules.concat(
+                listOfFailedRules
+            );
+        }
+    };
+
     this.setEngine = engine => {
         this.engine = engine;
     };
 
     this.resolve = data => {
-        _parseConditionRules(data);
         _resolveConditionStatus(data);
         return {
             status: this.status,

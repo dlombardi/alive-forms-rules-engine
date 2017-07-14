@@ -1,270 +1,67 @@
+"use strict";
+
 const test = require("ava");
 const Rule = require("../src/rule");
 const Engine = require("../src/engine");
 
-/**
- * equal operator test 
- */
-
-test("equal operator", t => {
+test("rule resolve", t => {
     let engine = new Engine();
 
-    const true_data = {
-        name: "foo"
-    };
-
-    const false_data = {
-        name: "foo"
-    };
-
-    const true_rule = new Rule({
-        fact: "name",
+    const rule = new Rule({
+        factKey: "population",
         operator: "=",
-        value: "foo"
+        value: 200,
+        valueTypeEquality: true
     });
 
-    const false_rule = new Rule({
-        fact: "name",
+    rule.setEngine(engine);
+
+    rule.resolve({ population: 200 });
+    t.true(rule.status);
+});
+
+test("rule resolve failed", t => {
+    let engine = new Engine();
+
+    const rule = new Rule({
+        factKey: "population",
         operator: "=",
-        value: "bar"
+        value: 200,
+        valueTypeEquality: true
     });
 
-    true_rule.setEngine(engine);
-    false_rule.setEngine(engine);
+    rule.setEngine(engine);
 
-    true_rule.resolve(true_data);
-    false_rule.resolve(false_data);
-
-    t.true(true_rule.status);
-    t.false(false_rule.status);
-    t.pass();
+    rule.resolve({ population: 20 });
+    t.falsy(rule.status);
+    t.deepEqual(rule.failedRule, {
+        factKey: "population",
+        operator: "=",
+        expectedValue: 200
+    });
 });
 
-//===================================
-
-/**
- * not equal operator test
- */
-
-test("not equal operator", t => {
+test("property test", t => {
     let engine = new Engine();
 
-    const true_data = {
-        name: "foo"
-    };
-
-    const false_data = {
-        name: "foo"
-    };
-
-    const true_rule = new Rule({
-        fact: "name",
-        operator: "!=",
-        value: "bar"
+    const rule = new Rule({
+        factKey: "person",
+        operator: "=",
+        value: "software developer",
+        property: ".occupation.title",
+        valueTypeEquality: true
     });
 
-    const false_rule = new Rule({
-        fact: "name",
-        operator: "!=",
-        value: "foo"
+    rule.setEngine(engine);
+
+    rule.resolve({
+        person: {
+            name: "Darien",
+            age: 24,
+            occupation: {
+                title: "software developer"
+            }
+        }
     });
-
-    true_rule.setEngine(engine);
-    false_rule.setEngine(engine);
-
-    true_rule.resolve(true_data);
-    false_rule.resolve(false_data);
-
-    t.true(true_rule.status);
-    t.false(false_rule.status);
-    t.pass();
+    t.true(rule.status);
 });
-
-//===================================
-
-/**
- * greater than operator test
- */
-
-test("greater than operator", t => {
-    let engine = new Engine();
-
-    const true_data = {
-        value: 1
-    };
-
-    const false_data = {
-        value: 1
-    };
-
-    const true_rule = new Rule({
-        fact: "value",
-        operator: ">",
-        value: 0
-    });
-
-    const false_rule = new Rule({
-        fact: "value",
-        operator: ">",
-        value: 2
-    });
-
-    true_rule.setEngine(engine);
-    false_rule.setEngine(engine);
-
-    true_rule.resolve(true_data);
-    false_rule.resolve(false_data);
-
-    t.true(true_rule.status);
-    t.false(false_rule.status);
-    t.pass();
-});
-
-//===================================
-
-/**
- * less than operator test
- */
-
-test("greater than operator", t => {
-    let engine = new Engine();
-
-    const true_data = {
-        value: 1
-    };
-
-    const false_data = {
-        value: 1
-    };
-
-    const true_rule = new Rule({
-        fact: "value",
-        operator: "<",
-        value: 2
-    });
-
-    const false_rule = new Rule({
-        fact: "value",
-        operator: "<",
-        value: 0
-    });
-
-    true_rule.setEngine(engine);
-    false_rule.setEngine(engine);
-
-    true_rule.resolve(true_data);
-    false_rule.resolve(false_data);
-
-    t.true(true_rule.status);
-    t.false(false_rule.status);
-    t.pass();
-});
-
-//===================================
-
-/**
- * greater than or equal to operator
- */
-
-test("greater than or equal to operator", t => {
-    let engine = new Engine();
-
-    const true_data_1 = {
-        value: 1
-    };
-
-    const true_data_2 = {
-        value: 1
-    };
-
-    const false_data_1 = {
-        value: 1
-    };
-
-    const false_data_2 = {
-        value: 1
-    };
-
-    const true_rule_1 = new Rule({
-        fact: "value",
-        operator: ">=",
-        value: 1
-    });
-
-    const true_rule_2 = new Rule({
-        fact: "value",
-        operator: ">=",
-        value: 0
-    });
-
-    const false_rule = new Rule({
-        fact: "value",
-        operator: ">=",
-        value: 3
-    });
-
-    true_rule_1.setEngine(engine);
-    true_rule_2.setEngine(engine);
-    false_rule.setEngine(engine);
-
-    true_rule_1.resolve(true_data_1);
-    true_rule_2.resolve(true_data_2);
-    false_rule.resolve(false_data_1);
-
-    t.true(true_rule_1.status);
-    t.true(true_rule_2.status);
-    t.false(false_rule.status);
-    t.pass();
-});
-
-//===================================
-
-/**
- * less than or equal to operator
- */
-
-// test('less than or equal to operator', t => {
-// 	const true_data_1 = {
-// 		value: 1
-// 	};
-
-// 	const true_data_2 = {
-// 		value: 1
-// 	};
-
-// 	const false_data_1 = {
-// 		value: 1
-// 	};
-
-// 	const false_data_2 = {
-// 		value: 1
-// 	};
-
-// 	const true_rule_1 = new Rule({
-// 		fact: 'value',
-// 		operator: '>=',
-// 		value: 1
-// 	});
-
-// 	const true_rule_2 = new Rule({
-// 		fact: 'value',
-// 		operator: '>=',
-// 		value: 0
-// 	});
-
-// 	true_rule_1.resolve(true_data_1);
-// 	true_rule_2.resolve(true_data_2);
-
-// 	const false_rule = new Rule({
-// 		fact: 'value',
-// 		operator: '>=',
-// 		value: 3
-// 	});
-
-// 	false_rule.resolve(false_data_1);
-
-// 	t.true(true_rule_1.status);
-// 	t.true(true_rule_2.status);
-// 	t.false(false_rule.status);
-// 	t.pass();
-// });
