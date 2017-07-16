@@ -3,6 +3,7 @@ const Rule = require("./rule");
 /**
  * Condition
  * @constructor
+ * @return - and instance of Condition
  */
 module.exports = function Condition({ conditional, rules }) {
     this.conditional = String(conditional.toLowerCase());

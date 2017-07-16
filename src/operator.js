@@ -10,6 +10,22 @@ module.exports = function Operator(
     { inverse, type },
     evaluateCb
 ) {
+    if (!evaluateCb) {
+        throw new Error("Operator: an name must be supplied to a new Operator");
+    }
+
+    if (!descriptor) {
+        throw new Error(
+            "Operator: a descriptor string must be supplied to a new Operator"
+        );
+    }
+
+    if (!evaluateCb) {
+        throw new Error(
+            "Operator: an evaluateCb function must be supplied to a new Operator"
+        );
+    }
+
     this.descriptor = String(descriptor);
     this.name = String(name);
     this.evaluateCb = evaluateCb;
