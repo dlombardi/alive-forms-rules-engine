@@ -2,6 +2,10 @@
 
 const Fact = require("./fact");
 
+/**
+ * Rule
+ * @constructor
+ */
 module.exports = function Rule({
     factKey,
     operator,
@@ -17,8 +21,6 @@ module.exports = function Rule({
     };
 
     this.resolve = data => {
-        let fact = new Fact(data);
-        fact.setCache(this.engine.cache);
         let factValue = data[factKey];
 
         if (property) {

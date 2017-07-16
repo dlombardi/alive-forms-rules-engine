@@ -4,7 +4,7 @@ const test = require("ava");
 const Rule = require("../src/rule");
 const Engine = require("../src/engine");
 
-test("rule resolve", t => {
+test("rule will resolution succeeds", t => {
     let engine = new Engine();
 
     const rule = new Rule({
@@ -20,7 +20,7 @@ test("rule resolve", t => {
     t.true(rule.status);
 });
 
-test("rule resolve failed", t => {
+test("rule will resolution fails", t => {
     let engine = new Engine();
 
     const rule = new Rule({
@@ -41,7 +41,7 @@ test("rule resolve failed", t => {
     });
 });
 
-test("property test", t => {
+test("access rule property succeeds", t => {
     let engine = new Engine();
 
     const rule = new Rule({
@@ -64,4 +64,29 @@ test("property test", t => {
         }
     });
     t.true(rule.status);
+});
+
+test("access rule property fails", t => {
+    let engine = new Engine();
+
+    const rule = new Rule({
+        factKey: "person",
+        operator: "=",
+        value: "software developer",
+        property: ".occupation.name",
+        valueTypeEquality: true
+    });
+
+    rule.setEngine(engine);
+
+    rule.resolve({
+        person: {
+            name: "Darien",
+            age: 24,
+            occupation: {
+                title: "software developer"
+            }
+        }
+    });
+    t.false(rule.status);
 });

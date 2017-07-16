@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * Fact
+ * @constructor
+ */
 module.exports = function Fact(data) {
     this.cache = null;
     this.data = data;

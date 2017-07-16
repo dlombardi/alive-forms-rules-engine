@@ -1,48 +1,78 @@
-const Operator = require('./operator');
+const Operator = require("./operator");
 
-const default_operators = new Map();
+const defaultOperators = new Map();
 
-default_operators.set(
-	'=',
-	new Operator('=', 'equals', (a, b) => a === b, {
-		inverse: '!=',
-		type: 'any'
-	})
+defaultOperators.set(
+    "=",
+    new Operator(
+        "=",
+        "equals",
+        {
+            inverse: "!=",
+            type: "any"
+        },
+        (a, b) => a === b
+    )
 );
-default_operators.set(
-	'!=',
-	new Operator('!=', 'does not equal', (a, b) => a !== b, {
-		inverse: '=',
-		type: 'any'
-	})
+defaultOperators.set(
+    "!=",
+    new Operator(
+        "!=",
+        "does not equal",
+        {
+            inverse: "=",
+            type: "any"
+        },
+        (a, b) => a !== b
+    )
 );
-default_operators.set(
-	'<',
-	new Operator('<', 'less than', (a, b) => a < b, {
-		inverse: '>=',
-		type: 'number'
-	})
+defaultOperators.set(
+    "<",
+    new Operator(
+        "<",
+        "less than",
+        {
+            inverse: ">=",
+            type: "number"
+        },
+        (a, b) => a < b
+    )
 );
-default_operators.set(
-	'<=',
-	new Operator('<=', 'less than or equal to', (a, b) => a <= b, {
-		inverse: '>',
-		type: 'number'
-	})
+defaultOperators.set(
+    "<=",
+    new Operator(
+        "<=",
+        "less than or equal to",
+        {
+            inverse: ">",
+            type: "number"
+        },
+        (a, b) => a <= b
+    )
 );
-default_operators.set(
-	'>',
-	new Operator('>', 'greater than', (a, b) => a > b, {
-		inverse: '<=',
-		type: 'number'
-	})
+defaultOperators.set(
+    ">",
+    new Operator(
+        ">",
+        "greater than",
+        {
+            inverse: "<=",
+            type: "number"
+        },
+        (a, b) => a > b
+    )
 );
-default_operators.set(
-	'>=',
-	new Operator('>=', 'greater than or equal to', (a, b) => a >= b, {
-		inverse: '<',
-		type: 'number'
-	})
+defaultOperators.set(
+    ">=",
+    new Operator(
+        ">=",
+        "greater than or equal to",
+        {
+            inverse: "<",
+            type: "number"
+        },
+        (a, b) => a >= b
+    )
 );
 
-module.exports = default_operators;
+module.exports = defaultOperators;

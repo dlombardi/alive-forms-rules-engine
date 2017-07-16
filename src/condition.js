@@ -1,5 +1,9 @@
 const Rule = require("./rule");
 
+/**
+ * Condition
+ * @constructor
+ */
 module.exports = function Condition({ conditional, rules }) {
     this.conditional = String(conditional.toLowerCase());
     this.rules = rules;
