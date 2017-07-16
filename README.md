@@ -28,4 +28,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Cache Hamm's (github - [CacheControl](https://github.com/CacheControl)) [json-rules-engine](https://github.com/CacheControl/json-rules-engine) for providing the inspiration and the architectural philosophy.  
+* Cache Hamm's (github - [CacheControl](https://github.com/CacheControl)) [json-rules-engine](https://github.com/CacheControl/json-rules-engine) for providing the inspiration and the design philosophy.  
