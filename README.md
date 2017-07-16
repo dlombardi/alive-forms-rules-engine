@@ -1,4 +1,5 @@
 # alive-forms-rules-engine
+[![Build Status](https://travis-ci.org/dlombardi/alive-forms-rules-engine.svg?branch=master)](https://travis-ci.org/dlombardi/alive-forms-rules-engine)
 
 A rules engine to power reactive form effects.
 
