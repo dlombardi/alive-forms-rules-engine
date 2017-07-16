@@ -3,6 +3,7 @@
 /**
  * Operator
  * @constructor
+ * @return - an instance of Operator
  */
 module.exports = function Operator(
     name,

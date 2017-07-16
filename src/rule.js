@@ -3,6 +3,7 @@
 /**
  * Rule
  * @constructor
+ * @return - an instance of Rule
  */
 module.exports = function Rule({
     factKey,
