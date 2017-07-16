@@ -1,7 +1,5 @@
 "use strict";
 
-const Fact = require("./fact");
-
 /**
  * Rule
  * @constructor

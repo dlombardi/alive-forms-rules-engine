@@ -2,7 +2,6 @@
 
 const defaultOperators = require("./default-operators");
 const Operator = require("./operator");
-const Cache = require("./cache");
 const Condition = require("./condition");
 
 /**
@@ -12,7 +11,6 @@ const Condition = require("./condition");
 module.exports = function Engine() {
     this.conditionList = [];
     this.operators = defaultOperators; // Map()
-    this.cache = new Cache();
     this.facts = new Map();
     this.status = "READY";
 
