@@ -7,6 +7,7 @@ const Condition = require("./condition");
 /**
  * Rule Engine
  * @constructor
+ * @return - an instance of Engine
  */
 module.exports = function Engine() {
     this.conditionList = [];
@@ -73,19 +74,6 @@ module.exports = function Engine() {
         }
         condition.setEngine(this);
         this.conditionList.push(condition);
-        return this;
-    };
-
-    this.addFact = (id, valueOrMethod, options) => {
-        let factId = id;
-        let fact;
-        if (id instanceof Fact) {
-            factId = id.id;
-            fact = id;
-        } else {
-            fact = new Fact(id, valueOrMethod, options);
-        }
-        this.facts.set(factId, fact);
         return this;
     };
 
