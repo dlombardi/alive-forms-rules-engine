@@ -1,7 +1,5 @@
 "use strict";
 
-var hash = require("object-hash");
-
 /**
  * Cache
  * @constructor
