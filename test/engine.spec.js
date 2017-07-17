@@ -54,15 +54,26 @@ let conditionConfig = {
             }
         ]
     },
-    event: {}
+    event: {
+        type: "condition true",
+        params: {
+            message: "this evaluated to true"
+        }
+    }
 };
 
 test("engine works", t => {
     let engine = new Engine();
     engine.addCondition(conditionConfig);
-    const result = engine.run(data);
-    t.true(result[0].status);
-    t.pass();
+    engine.run(data, results => {
+        results.passingConditions.forEach(passingCondition => {
+            t.is(
+                passingCondition.event.params.message,
+                "this evaluated to true"
+            );
+            t.pass();
+        });
+    });
 });
 
 test("custom operator works", t => {
@@ -88,7 +99,13 @@ test("custom operator works", t => {
 
     engine.addOperator(operator);
     engine.addCondition(conditionConfig);
-    const result = engine.run(data);
-    t.true(result[0].status);
-    t.pass();
+    engine.run(data, results => {
+        results.passingConditions.forEach(passingCondition => {
+            t.is(
+                passingCondition.event.params.message,
+                "this evaluated to true"
+            );
+            t.pass();
+        });
+    });
 });

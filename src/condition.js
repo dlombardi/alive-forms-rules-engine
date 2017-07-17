@@ -5,11 +5,17 @@ const Rule = require("./rule");
  * @constructor
  * @return - and instance of Condition
  */
-module.exports = function Condition({ conditional, rules }) {
+module.exports = function Condition({
+    condition: { conditional, rules },
+    event
+}) {
     this.conditional = String(conditional.toLowerCase());
     this.rules = rules;
     this.listOfFailedRules = [];
     this.status = false;
+    if (event) {
+        this.event = event;
+    }
 
     this.method =
         this.conditional === "and"
@@ -38,7 +44,7 @@ module.exports = function Condition({ conditional, rules }) {
     const _parseConditionRules = data => {
         this.rules.forEach(rule => {
             if (rule.conditional && rule.rules) {
-                const condition = new Condition(rule);
+                const condition = new Condition({ condition: rule });
                 condition.setEngine(this.engine);
                 condition.resolve(data);
             } else {
@@ -90,7 +96,8 @@ module.exports = function Condition({ conditional, rules }) {
         _resolveConditionStatus(data);
         return {
             status: this.status,
-            listOfFailedRules: this.listOfFailedRules
+            listOfFailedRules: this.listOfFailedRules,
+            event: this.event ? this.event : null
         };
     };
 };

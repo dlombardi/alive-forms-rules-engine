@@ -70,16 +70,30 @@ module.exports = function Engine() {
         if (params.condition instanceof Condition) {
             condition = params.condition;
         } else {
-            condition = new Condition(params.condition);
+            condition = new Condition(params);
         }
         condition.setEngine(this);
         this.conditionList.push(condition);
         return this;
     };
 
-    this.run = data =>
-        this.conditionList.map(condition => {
+    const _evaluateConditions = (data, cb) => {
+        let failingConditions = [];
+        let passingConditions = [];
+        let evaluatedConditions = this.conditionList.map(condition => {
             condition = condition.resolve(data);
+            condition.status
+                ? passingConditions.push(condition)
+                : failingConditions.push(condition);
             return condition;
         });
+        let evaluationStats = {
+            evaluatedConditions,
+            failingConditions,
+            passingConditions
+        };
+        cb(evaluationStats);
+    };
+
+    this.run = (data, cb) => _evaluateConditions(data, cb);
 };
