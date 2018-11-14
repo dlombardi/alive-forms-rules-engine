@@ -14,6 +14,7 @@ defaultOperators.set(
         (a, b) => a === b
     )
 );
+
 defaultOperators.set(
     "!=",
     new Operator(
@@ -26,6 +27,7 @@ defaultOperators.set(
         (a, b) => a !== b
     )
 );
+
 defaultOperators.set(
     "<",
     new Operator(
@@ -38,6 +40,7 @@ defaultOperators.set(
         (a, b) => a < b
     )
 );
+
 defaultOperators.set(
     "<=",
     new Operator(
@@ -50,6 +53,7 @@ defaultOperators.set(
         (a, b) => a <= b
     )
 );
+
 defaultOperators.set(
     ">",
     new Operator(

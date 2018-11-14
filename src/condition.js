@@ -6,7 +6,7 @@ const Rule = require("./rule");
  * @return - and instance of Condition
  */
 module.exports = function Condition({
-    condition: { conditional, rules },
+    ruleSet: { conditional, rules },
     event
 }) {
     this.conditional = String(conditional.toLowerCase());
@@ -44,7 +44,8 @@ module.exports = function Condition({
     const _parseConditionRules = data => {
         this.rules.forEach(rule => {
             if (rule.conditional && rule.rules) {
-                const condition = new Condition({ condition: rule });
+                const ruleSet = rule;
+                const condition = new Condition({ ruleSet });
                 condition.setEngine(this.engine);
                 condition.resolve(data);
             } else {

@@ -7,64 +7,69 @@ const Engine = require("../src/engine");
  * engine test 
  */
 
-let data = {
-    "01": "value1",
-    "02": "value2",
-    "03": "value3",
-    "04": {
-        number: 3,
-        person: {
-            name: "Darien"
-        }
-    },
-    "05": 2
-};
+let data;
+let conditionDescriptor;
 
-let conditionConfig = {
-    condition: {
-        conditional: "and",
-        rules: [
-            {
-                factKey: "01",
-                operator: "=",
-                value: "value1"
-            },
-            {
-                conditional: "or",
-                rules: [
-                    {
-                        factKey: "03",
-                        operator: "=",
-                        value: "value2"
-                    },
-                    {
-                        factKey: "03",
-                        operator: "=",
-                        valueTypeEquality: true,
-                        value: "value131"
-                    },
-                    {
-                        factKey: "04",
-                        property: ".person.name",
-                        operator: "=",
-                        valueTypeEquality: true,
-                        value: "Darien"
-                    }
-                ]
+test.beforeEach(t => {
+    data = {
+        "01": "value1",
+        "02": "value2",
+        "03": "value3",
+        "04": {
+            number: 3,
+            person: {
+                name: "Darien"
             }
-        ]
-    },
-    event: {
-        type: "condition true",
-        params: {
-            message: "this evaluated to true"
+        },
+        "05": 2
+    };
+    
+    conditionDescriptor = {
+        ruleSet: {
+            conditional: "and",
+            rules: [
+                {
+                    factKey: "01",
+                    operator: "=",
+                    value: "value1"
+                },
+                {
+                    conditional: "or",
+                    rules: [
+                        {
+                            factKey: "03",
+                            operator: "=",
+                            value: "value2"
+                        },
+                        {
+                            factKey: "03",
+                            operator: "=",
+                            valueTypeEquality: true,
+                            value: "value131"
+                        },
+                        {
+                            factKey: "04",
+                            property: ".person.name",
+                            operator: "=",
+                            valueTypeEquality: true,
+                            value: "Darien"
+                        }
+                    ]
+                }
+            ]
+        },
+        event: {
+            type: "condition true",
+            params: {
+                message: "this evaluated to true"
+            }
         }
-    }
-};
+    };
+});
 
 test("engine works", t => {
     let engine = new Engine();
-    engine.addCondition(conditionConfig);
+    engine.addRuleSet(conditionDescriptor);
     engine.run(data, results => {
         results.passingConditions.forEach(passingCondition => {
             t.is(
@@ -79,7 +84,7 @@ test("engine works", t => {
 test("custom operator works", t => {
     let engine = new Engine();
 
-    conditionConfig.condition.rules.push({
+    conditionDescriptor.ruleSet.rules.push({
         factKey: "05",
         operator: "in",
         valueTypeEquality: false,
@@ -98,7 +103,7 @@ test("custom operator works", t => {
     };
 
     engine.addOperator(operator);
-    engine.addCondition(conditionConfig);
+    engine.addRuleSet(conditionDescriptor);
     engine.run(data, results => {
         results.passingConditions.forEach(passingCondition => {
             t.is(

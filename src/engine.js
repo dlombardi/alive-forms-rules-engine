@@ -51,13 +51,13 @@ module.exports = function Engine() {
      * 
      * @return {object} this - engine context
      */
-    this.addCondition = params => {
+    this.addRuleSet = params => {
         if (!params) {
             throw new Error("Engine: addCondition() requires parameters");
         }
-        if (!params.hasOwnProperty("condition")) {
+        if (!params.hasOwnProperty("ruleSet")) {
             throw new Error(
-                'Engine: addCondition() argument requires "condition" property'
+                'Engine: addCondition() argument requires "ruleSet" property'
             );
         }
         if (!params.hasOwnProperty("event")) {
