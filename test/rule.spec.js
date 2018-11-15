@@ -4,7 +4,7 @@ const test = require("ava");
 const Rule = require("../src/rule");
 const Engine = require("../src/engine");
 
-test("rule will resolution succeeds", t => {
+test("if rule will run successfully", t => {
     let engine = new Engine();
 
     const rule = new Rule({
@@ -20,7 +20,7 @@ test("rule will resolution succeeds", t => {
     t.true(rule.status);
 });
 
-test("rule will resolution fails", t => {
+test("if rule will fail if expected value does not equal fact value", t => {
     let engine = new Engine();
 
     const rule = new Rule({
@@ -41,7 +41,7 @@ test("rule will resolution fails", t => {
     });
 });
 
-test("access rule property succeeds", t => {
+test("if a rule accessing a deep property on the data succeeds", t => {
     let engine = new Engine();
 
     const rule = new Rule({
@@ -66,7 +66,7 @@ test("access rule property succeeds", t => {
     t.true(rule.status);
 });
 
-test("access rule property fails", t => {
+test("if a rule accessing a deep property on the data fails", t => {
     let engine = new Engine();
 
     const rule = new Rule({

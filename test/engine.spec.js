@@ -67,7 +67,7 @@ test.beforeEach(t => {
     };
 });
 
-test("engine works", t => {
+test("if engine evalues a conditionDescriptor", t => {
     let engine = new Engine();
     engine.addRuleSet(conditionDescriptor);
     engine.run(data, results => {
@@ -81,14 +81,14 @@ test("engine works", t => {
     });
 });
 
-test("custom operator works", t => {
+test("if custom sync operator evaluates", t => {
     let engine = new Engine();
 
     conditionDescriptor.ruleSet.rules.push({
         factKey: "05",
         operator: "in",
         valueTypeEquality: false,
-        value: [1, 3, 5, 7]
+        value: [1, 2, 3, 5, 7]
     });
 
     let operator = {
@@ -114,3 +114,43 @@ test("custom operator works", t => {
         });
     });
 });
+
+// test("if custom async operator evaluates", t => {
+//     let engine = new Engine();
+
+//     conditionDescriptor.ruleSet.rules.push({
+//         factKey: "05",
+//         operator: "in",
+//         valueTypeEquality: false,
+//         value: [1, 2, 3, 5, 7]
+//     });
+
+//     let operator = {
+//         name: "in",
+//         descriptor: "within array",
+//         options: {
+//             inverse: "not in",
+//             type: "any"
+//         },
+//         evaluateCb: (factValue, expectedValue) => {
+//             return new Promise((resolve, reject) => {
+//                 setTimeout(() => {
+//                     console.log(expectedValue.includes(factValue))
+//                     resolve(expectedValue.includes(factValue))
+//                 }, 1000)
+//             })
+//         }
+//     };
+
+//     engine.addOperator(operator);
+//     engine.addRuleSet(conditionDescriptor);
+//     engine.run(data, results => {
+//         results.passingConditions.forEach(passingCondition => {
+//             t.is(
+//                 passingCondition.event.params.message,
+//                 "this evaluated to true"
+//             );
+//             t.pass();
+//         });
+//     });
+// });
